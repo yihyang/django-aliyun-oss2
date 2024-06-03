@@ -12,7 +12,7 @@ except ImportError:
     from urlparse import urljoin
 
 from django.core.files import File
-from django.utils.encoding import force_text, filepath_to_uri, force_bytes
+from django.utils.encoding import force_str, filepath_to_uri, force_bytes
 from oss2 import Auth, Service, BucketIterator, Bucket, ObjectIterator
 from oss2.exceptions import AccessDenied
 from django.conf import settings
@@ -120,7 +120,7 @@ class AliyunBaseStorage(BucketOperationMixin, Storage):
         the directory specified by the LOCATION setting.
         """
 
-        base_path = force_text(self.location)
+        base_path = force_str(self.location)
         base_path = base_path.rstrip('/')
 
         final_path = urljoin(base_path.rstrip('/') + "/", name)
@@ -233,7 +233,7 @@ class AliyunFile(File):
         if 'b' in self._mode:
             return data
         else:
-            return force_text(data)
+            return force_str(data)
 
     def write(self, content):
         if 'w' not in self._mode:
